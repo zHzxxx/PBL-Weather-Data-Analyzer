@@ -102,10 +102,10 @@ double findLowest(double temps[], int days) {
 void weeklyReport(double weeklyData[][7], int weeks) {
     // Input 2D array
     for (int i = 0; i < weeks; i++) {
-        cout << "\n--- Week " << i+1 << " ---\n";
+        cout <<"Week"<< i+1 <<" ";
         for (int j = 0; j < 7; j++) {
-            cout << "Day " << j+1 << ": ";
-            cin >> weeklyData[i][j];
+            cout<<"Day "<< j+1 << ": ";
+            cin>>weeklyData[i][j];
         }
     }
 
