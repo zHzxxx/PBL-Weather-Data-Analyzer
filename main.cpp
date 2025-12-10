@@ -110,11 +110,11 @@ void weeklyReport(double weeklyData[][7], int weeks) {
     }
 
     // Display weekly report
-    cout << "\n====== Weekly Report ======\n";
+    cout<<"Weekly Report"<<endl;
     for (int i = 0; i < weeks; i++) {
-        cout << "Week " << i+1 << ": ";
+        cout<<"Week"<< i+1<<": ";
         for (int j = 0; j < 7; j++)
-            cout << weeklyData[i][j] << " ";
-        cout << endl;
+            cout<<weeklyData[i][j]<<" ";
+        cout<<endl;
     }
 }
