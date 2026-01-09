@@ -1,4 +1,5 @@
 #include <iostream>
+#include <limits>
 using namespace std;
 
 void inputTemperatures(double temps[], int days);
@@ -9,56 +10,78 @@ void weeklyReport(double weeklyData[][7], int weeks);
 
 int main() {
     int days;
-    cout<<"Enter number of days to record temperature (max 7):";
-    cin>>days;
-    if (days < 1 || days > 7) {
-        cout << "Invalid number of days!";
-        return 1;
+
+    // VALIDATE NUMBER OF DAYS (1 to 7, no strings allowed)
+    while (true) {
+        cout << "Enter number of days to record temperature (max 7): ";
+        cin >> days;
+
+        if (cin.fail()) {
+            cout << "Invalid input! Please enter a number between 1 and 7.\n";
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            continue;
+        }
+
+        if (days < 1 || days > 7) {
+            cout << "Invalid number of days! Please enter between 1 and 7.\n";
+            continue;
+        }
+
+        break; // valid input
     }
 
     double temperatures[7];
-
-    // Input data
     inputTemperatures(temperatures, days);
 
     int choice;
-    do {
-        cout<<"Weather Data Analyzer Menu"<<endl;
-        cout<<"1. Show Average Temperature"<<endl;
-        cout<<"2. Show Highest Temperature"<<endl;
-        cout<<"3. Show Lowest Temperature"<<endl;
-        cout<<"4. Weekly Temperature Report (2D Array)"<<endl;
-        cout<<"5. Exit"<<endl;
-        cout<<"Choose an option: ";
-        cin>>choice;
 
-        switch(choice) {
+    do {
+        cout << "\nWeather Data Analyzer Menu\n";
+        cout << "1. Show Average Temperature\n";
+        cout << "2. Show Highest Temperature\n";
+        cout << "3. Show Lowest Temperature\n";
+        cout << "4. Weekly Temperature Report (2D Array)\n";
+        cout << "5. Exit\n";
+        cout << "Choose an option: ";
+        cin >> choice;
+
+        if (cin.fail()) {
+            cout << "Invalid input! Enter a number between 1 and 5.\n";
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            continue;
+        }
+
+        switch (choice) {
             case 1:
-                cout<<"Average Temperature:"<<calculateAverage(temperatures, days)<<"°C";
+                cout << "Average Temperature: "
+                     << calculateAverage(temperatures, days) << " °C\n";
                 break;
 
             case 2:
-                cout<<"Highest Temperature:"<<findHighest(temperatures, days)<<"°C";
+                cout << "Highest Temperature: "
+                     << findHighest(temperatures, days) << " °C\n";
                 break;
 
             case 3:
-                cout<<"Lowest Temperature:"<<findLowest(temperatures, days)<<"°C";
+                cout << "Lowest Temperature: "
+                     << findLowest(temperatures, days) << " °C\n";
                 break;
 
             case 4: {
-                double weekData[2][7]; // 2D array for 2 weeks
-
-                cout<<"Enter temperature data for **2 weeks**, 7 days each:"<<endl;
+                double weekData[2][7];
+                cout << "\nEnter temperature data for 2 weeks:\n";
                 weeklyReport(weekData, 2);
                 break;
             }
 
             case 5:
-                cout<<"Exiting program"<<endl;
+                cout << "Exiting program.\n";
                 break;
 
             default:
-                cout<<"Invalid option! Try again."<<endl;
+                cout << "Invalid option! Please choose between 1 and 5.\n";
         }
 
     } while (choice != 5);
@@ -66,55 +89,56 @@ int main() {
     return 0;
 }
 
-// Function to input daily temperatures
+// INPUT DAILY TEMPERATURES
 void inputTemperatures(double temps[], int days) {
     cout << "\nEnter temperature for " << days << " days:\n";
     for (int i = 0; i < days; i++) {
-        cout << "Day " << i+1 << ": ";
+        cout << "Day " << i + 1 << ": ";
         cin >> temps[i];
     }
 }
 
-// Calculate average
+// CALCULATE AVERAGE
 double calculateAverage(double temps[], int days) {
     double sum = 0;
-    for (int i = 0; i < days; i++) sum += temps[i];
+    for (int i = 0; i < days; i++)
+        sum += temps[i];
     return sum / days;
 }
 
-// Find highest temperature
+// FIND HIGHEST TEMPERATURE
 double findHighest(double temps[], int days) {
-    double max = temps[0];
+    double maxTemp = temps[0];
     for (int i = 1; i < days; i++)
-        if (temps[i] > max) max = temps[i]; // relational operator
-    return max;
+        if (temps[i] > maxTemp)
+            maxTemp = temps[i];
+    return maxTemp;
 }
 
-// Find lowest temperature
+// FIND LOWEST TEMPERATURE
 double findLowest(double temps[], int days) {
-    double min = temps[0];
+    double minTemp = temps[0];
     for (int i = 1; i < days; i++)
-        if (temps[i] < min) min = temps[i];
-    return min;
+        if (temps[i] < minTemp)
+            minTemp = temps[i];
+    return minTemp;
 }
 
-// Handle weekly data (2D array)
+// WEEKLY REPORT USING 2D ARRAY
 void weeklyReport(double weeklyData[][7], int weeks) {
-    // Input 2D array
     for (int i = 0; i < weeks; i++) {
-        cout <<"Week"<< i+1 <<" ";
+        cout << "Week " << i + 1 << ":\n";
         for (int j = 0; j < 7; j++) {
-            cout<<"Day "<< j+1 << ": ";
-            cin>>weeklyData[i][j];
+            cout << "  Day " << j + 1 << ": ";
+            cin >> weeklyData[i][j];
         }
     }
 
-    // Display weekly report
-    cout<<"Weekly Report"<<endl;
+    cout << "\nWeekly Temperature Report:\n";
     for (int i = 0; i < weeks; i++) {
-        cout<<"Week"<< i+1<<": ";
+        cout << "Week " << i + 1 << ": ";
         for (int j = 0; j < 7; j++)
-            cout<<weeklyData[i][j]<<" ";
-        cout<<endl;
+            cout << weeklyData[i][j] << " ";
+        cout << endl;
     }
 }
